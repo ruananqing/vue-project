@@ -17,7 +17,7 @@
       <div class="index-left-block lastest-news">
         <h2>最新消息</h2>
         <ul>
-          <li v-for="item in newsList">{{ item.title}}</li>
+          <li v-for="item in newsList">{{ item.id + item.title + item.url }}</li>
         </ul>
       </div>
     </div>
@@ -38,6 +38,15 @@
 </template>
 <script>
   export default {
+      created: function () {
+        this.$http.get('api/getNewsList')
+          .then((res)=>{
+            this.newsList = res.data;
+            console.log(this.newsList);
+          }, function (err) {
+            console.log(err);
+          });
+      },
       data() {
           return {
             boardList: [
@@ -70,25 +79,7 @@
                 saleout: false
               }
             ],
-            newsList: [
-              {
-                title: '数据统计',
-                url: 'http://starcraft.com'
-              },
-              {
-                title: '数据预测',
-                url: 'http://warcraft.com'
-              },
-              {
-                title: '流量分析',
-                url: 'http://overwatch.com',
-                hot: true
-              },
-              {
-                title: '广告发布',
-                url: 'http://hearstone.com'
-              }
-            ],
+            newsList: [],
             productList: {
               pc: {
                 title: 'PC产品',
