@@ -7,9 +7,9 @@
         </router-link>
         <div class="head-nav">
           <ul class="nav-list">
-            <li>登录</li>
+            <li @click="logClick">登录</li>
             <li class="nav-pile">|</li>
-            <li>注册</li>
+            <li @click="regClick">注册</li>
             <li class="nav-pile">|</li>
             <li @click="aboutClick">关于</li>
           </ul>
@@ -24,8 +24,14 @@
     <div class="app-foot">
       <p>© 2017 personal project</p>
     </div>
-    <my-dialog :is-show="isShowDialog" @on-close="closeDialog">
-      <p>other hello</p>
+    <my-dialog :is-show="isShowLogDialog" @on-close="closeDialog('isShowLogDialog')">
+      <p>log</p>
+    </my-dialog>
+    <my-dialog :is-show="isShowRegDialog" @on-close="closeDialog('isShowRegDialog')">
+      <p>reg</p>
+    </my-dialog>
+    <my-dialog :is-show="isShowAboutDialog" @on-close="closeDialog('isShowAboutDialog')">
+      <p>about</p>
     </my-dialog>
   </div>
 </template>
@@ -38,15 +44,23 @@
       },
       data() {
           return {
-              isShowDialog: false
+              isShowAboutDialog: false,
+              isShowLogDialog: false,
+              isShowRegDialog: false
           }
       },
       methods: {
-          aboutClick() {
-              this.isShowDialog = true;
+          logClick() {
+              this.isShowLogDialog = true;
           },
-          closeDialog() {
-              this.isShowDialog = false;
+          regClick() {
+              this.isShowRegDialog = true;
+          },
+          aboutClick() {
+            this.isShowAboutDialog = true;
+          },
+          closeDialog(attr) {
+              this[attr] = false;
           }
       }
   }
