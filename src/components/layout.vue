@@ -11,7 +11,7 @@
             <li class="nav-pile">|</li>
             <li>注册</li>
             <li class="nav-pile">|</li>
-            <li>关于</li>
+            <li @click="aboutClick">关于</li>
           </ul>
         </div>
       </div>
@@ -24,14 +24,29 @@
     <div class="app-foot">
       <p>© 2017 personal project</p>
     </div>
+    <my-dialog :is-show="isShowDialog" @on-close="closeDialog">
+      <p>other hello</p>
+    </my-dialog>
   </div>
 </template>
 
 <script>
+  import Dialog from './dialog.vue';
   export default {
+      components: {
+          MyDialog: Dialog
+      },
       data() {
           return {
-
+              isShowDialog: false
+          }
+      },
+      methods: {
+          aboutClick() {
+              this.isShowDialog = true;
+          },
+          closeDialog() {
+              this.isShowDialog = false;
           }
       }
   }
