@@ -2,7 +2,7 @@
   <div class="detail-wrap">
     <div class="detail-left">
       <div class="product-board">
-        <img>
+        <img :src="productIcon">
         <ul>
           <router-link v-for="item in products" :key="item.name" :to="{ path: item.path }" tag="li" active-class="active">
             {{ item.name }}

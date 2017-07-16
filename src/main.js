@@ -23,6 +23,7 @@ let router = new VueRouter({
       {
         path: '/detail',
         component: DetailPage,
+        redirect: '/detail/analysis',
         children: [
           {
             path: 'analysis',
