@@ -18,6 +18,7 @@
           产品类型：
         </div>
         <div class="sales-board-line-right">
+          <v-selection :selections="buyTypes" @on-change=""></v-selection>
         </div>
       </div>
       <div class="sales-board-line">
@@ -83,7 +84,11 @@
 </template>
 
 <script>
+  import VSelection from '../../components/selection.vue';
   export default {
+  	components: {
+  		VSelection
+    },
     data () {
       return {
         buyNum: 0,

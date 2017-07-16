@@ -244,7 +244,11 @@
 </template>
 
 <script>
+  import VChooser from '../../components/chooser.vue';
   export default {
+  	components: {
+  		VChooser
+    },
     data () {
       return {
         buyTypes: [
