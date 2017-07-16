@@ -84,9 +84,15 @@
 </template>
 
 <script>
+  import VCounter from '../../components/counter.vue';
+  import VChooser from '../../components/chooser.vue';
+  import VMulChooser from '../../components/multiplyChooser.vue';
   import VSelection from '../../components/selection.vue';
   export default {
   	components: {
+  		VCounter,
+      VChooser,
+      VMulChooser,
   		VSelection
     },
     data () {
@@ -143,6 +149,63 @@
         orderId: null,
         isShowCheckOrder: false,
         isShowErrDialog: false
+      }
+    },
+    methods: {
+      onParamChange (attr, val) {
+        this[attr] = val
+        this.getPrice()
+      },
+      getPrice () {
+        let buyVersionsArray = _.map(this.versions, (item) => {
+          return item.value
+        })
+        let reqParams = {
+          buyNumber: this.buyNum,
+          buyType: this.buyType.value,
+          period: this.period.value,
+          version: buyVersionsArray.join(',')
+        }
+        this.$http.post('/api/getPrice', reqParams)
+          .then((res) => {
+            this.price = res.data.amount
+          })
+      },
+      showPayDialog () {
+        this.isShowPayDialog = true
+      },
+      hidePayDialog () {
+        this.isShowPayDialog = false
+      },
+      hideErrDialog () {
+        this.isShowErrDialog = false
+      },
+      hideCheckOrder () {
+        this.isShowCheckOrder = false
+      },
+      onChangeBanks (bankObj) {
+        this.bankId = bankObj.id
+      },
+      confirmBuy () {
+        let buyVersionsArray = _.map(this.versions, (item) => {
+          return item.value
+        })
+        let reqParams = {
+          buyNumber: this.buyNum,
+          buyType: this.buyType.value,
+          period: this.period.value,
+          version: buyVersionsArray.join(','),
+          bankId: this.bankId
+        }
+        this.$http.post('/api/createOrder', reqParams)
+          .then((res) => {
+            this.orderId = res.data.orderId
+            this.isShowCheckOrder = true
+            this.isShowPayDialog = false
+          }, (err) => {
+            this.isShowBuyDialog = false
+            this.isShowErrDialog = true
+          })
       }
     }
   }

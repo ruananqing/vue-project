@@ -23,7 +23,10 @@
       }
     },
     methods: {
-
+      chosenSelection (index) {
+        this.nowIndex = index
+        this.$emit('on-change', this.selections[index])
+      }
     }
   }
 </script>

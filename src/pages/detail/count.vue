@@ -245,9 +245,12 @@
 
 <script>
   import VChooser from '../../components/chooser.vue';
+  import VSelection from '../../components/selection.vue';
+
   export default {
   	components: {
-  		VChooser
+  		VChooser,
+      VSelection
     },
     data () {
       return {
