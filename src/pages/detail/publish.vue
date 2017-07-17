@@ -252,9 +252,9 @@
 </template>
 
 <script>
-  import VCounter from '../../components/counter.vue';
-  import VMulChooser from '../../components/multiplyChooser.vue';
-  import VSelection from '../../components/selection.vue';
+  import VCounter from '../../components/base/counter.vue';
+  import VMulChooser from '../../components/base/multiplyChooser.vue';
+  import VSelection from '../../components/base/selection.vue';
 
   export default {
   	components: {

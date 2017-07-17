@@ -58,8 +58,8 @@
 </template>
 
 <script>
-  import VMulChooser from '../../components/multiplyChooser.vue';
-  import VCounter from '../../components/counter.vue';
+  import VMulChooser from '../../components/base/multiplyChooser.vue';
+  import VCounter from '../../components/base/counter.vue';
 
   export default {
   	components: {

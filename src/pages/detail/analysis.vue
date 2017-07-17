@@ -76,18 +76,46 @@
         <li>用户所在地理区域分布状况等</li>
       </ul>
     </div>
+    <my-dialog :is-show="isShowPayDialog" @on-close="hideShowPayDialog">
+      <!--the following elements will be the slot contents of the my-dialog component-->
+      <table class="buy-dialog-table">
+        <tr>
+          <th>购买数量</th>
+          <th>产品类型</th>
+          <th>有效时间</th>
+          <th>产品版本</th>
+          <th>总价</th>
+        </tr>
+        <tr>
+          <td>{{ buyNum }}</td>
+          <td>{{ buyType.label }}</td>
+          <td>{{ period.label }}</td>
+          <td>
+            <span v-for="item in versions">{{ item.label }}</span>
+          </td>
+          <td>{{ price }}</td>
+        </tr>
+      </table>
+      <h3 class="buy-dialog-title">请选择银行</h3>
+      <bank-chooser @on-change="onChangeBanks"></bank-chooser>
+      <div class="button buy-dialog-btn" @click="confirmBuy">
+        确认购买
+      </div>
+    </my-dialog>
   </div>
 </template>
 
 <script>
-  import VCounter from '../../components/counter.vue';
-  import VChooser from '../../components/chooser.vue';
-  import VMulChooser from '../../components/multiplyChooser.vue';
-  import VSelection from '../../components/selection.vue';
+  import Dialog from '../../components/base/dialog.vue';
+  import VCounter from '../../components/base/counter.vue';
+  import VChooser from '../../components/base/chooser.vue';
+  import VMulChooser from '../../components/base/multiplyChooser.vue';
+  import VSelection from '../../components/base/selection.vue';
   import _ from 'lodash';
 
   export default {
   	components: {
+  		MyDialog: Dialog,
   		VCounter,
       VChooser,
       VMulChooser,
@@ -166,8 +194,14 @@
         };
         this.$http.post('/api/getPrice', reqParams)
           .then((res) => {
-            this.price = res.data.amount
+            this.price = res.data.amount;
           })
+      },
+      showPayDialog() {
+      	this.isShowPayDialog = true;
+      },
+      hideShowPayDialog() {
+      	this.isShowPayDialog = false;
       }
     },
     mounted () {
