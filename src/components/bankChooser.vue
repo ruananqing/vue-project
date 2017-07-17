@@ -58,6 +58,7 @@
     methods: {
   		chooseSelection(index) {
   			this.nowIndex = index;
+  			this.$emit('on-change', this.banks[index]);
       }
     }
   }
