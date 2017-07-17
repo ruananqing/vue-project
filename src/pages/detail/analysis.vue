@@ -10,7 +10,7 @@
           购买数量：
         </div>
         <div class="sales-board-line-right">
-          <v-counter @on-change="onParamChange('buyNum', $event)"></v-counter>
+          <v-counter @on-change="onParamChange('buyNum', $event)" :max="100" :min="1"></v-counter>
         </div>
       </div>
       <div class="sales-board-line">
@@ -18,7 +18,7 @@
           产品类型：
         </div>
         <div class="sales-board-line-right">
-          <v-selection :selections="buyTypes" @on-change=""></v-selection>
+          <v-selection :selections="buyTypes" @on-change="onParamChange('buyType', $event)"></v-selection>
         </div>
       </div>
       <div class="sales-board-line">
@@ -26,9 +26,7 @@
           有效时间：
         </div>
         <div class="sales-board-line-right">
-          <v-chooser
-            :selections="periodList"
-            @on-change="onParamChange('period', $event)"></v-chooser>
+          <v-chooser :selections="periodList" @on-change="onParamChange('period', $event)"></v-chooser>
         </div>
       </div>
       <div class="sales-board-line">
@@ -36,9 +34,7 @@
           产品版本：
         </div>
         <div class="sales-board-line-right">
-          <v-mul-chooser
-            :selections="versionList"
-            @on-change="onParamChange('versions', $event)"></v-mul-chooser>
+          <v-mul-chooser :selections="versionList" @on-change="onParamChange('versions', $event)"></v-mul-chooser>
         </div>
       </div>
       <div class="sales-board-line">
@@ -88,6 +84,8 @@
   import VChooser from '../../components/chooser.vue';
   import VMulChooser from '../../components/multiplyChooser.vue';
   import VSelection from '../../components/selection.vue';
+  import _ from 'lodash';
+
   export default {
   	components: {
   		VCounter,
@@ -153,60 +151,31 @@
     },
     methods: {
       onParamChange (attr, val) {
-        this[attr] = val
+        this[attr] = val;
         this.getPrice()
       },
       getPrice () {
         let buyVersionsArray = _.map(this.versions, (item) => {
           return item.value
-        })
+        });
         let reqParams = {
           buyNumber: this.buyNum,
           buyType: this.buyType.value,
           period: this.period.value,
           version: buyVersionsArray.join(',')
-        }
+        };
         this.$http.post('/api/getPrice', reqParams)
           .then((res) => {
             this.price = res.data.amount
           })
-      },
-      showPayDialog () {
-        this.isShowPayDialog = true
-      },
-      hidePayDialog () {
-        this.isShowPayDialog = false
-      },
-      hideErrDialog () {
-        this.isShowErrDialog = false
-      },
-      hideCheckOrder () {
-        this.isShowCheckOrder = false
-      },
-      onChangeBanks (bankObj) {
-        this.bankId = bankObj.id
-      },
-      confirmBuy () {
-        let buyVersionsArray = _.map(this.versions, (item) => {
-          return item.value
-        })
-        let reqParams = {
-          buyNumber: this.buyNum,
-          buyType: this.buyType.value,
-          period: this.period.value,
-          version: buyVersionsArray.join(','),
-          bankId: this.bankId
-        }
-        this.$http.post('/api/createOrder', reqParams)
-          .then((res) => {
-            this.orderId = res.data.orderId
-            this.isShowCheckOrder = true
-            this.isShowPayDialog = false
-          }, (err) => {
-            this.isShowBuyDialog = false
-            this.isShowErrDialog = true
-          })
       }
+    },
+    mounted () {
+      this.buyNum = 1;
+      this.buyType = this.buyTypes[0];
+      this.versions = [this.versionList[0]];
+      this.period = this.periodList[0];
+      this.getPrice();
     }
   }
 </script>
