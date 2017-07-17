@@ -111,6 +111,7 @@
   import VChooser from '../../components/base/chooser.vue';
   import VMulChooser from '../../components/base/multiplyChooser.vue';
   import VSelection from '../../components/base/selection.vue';
+  import BankChooser from '../../components/bankChooser.vue'
   import _ from 'lodash';
 
   export default {
@@ -119,7 +120,8 @@
   		VCounter,
       VChooser,
       VMulChooser,
-  		VSelection
+  		VSelection,
+      BankChooser
     },
     data () {
       return {
@@ -202,6 +204,30 @@
       },
       hideShowPayDialog() {
       	this.isShowPayDialog = false;
+      },
+      onChangeBanks(bankObj) {
+      	this.bankId = bankObj.id
+      },
+      confirmBuy() {
+        let buyVersionsArray = _.map(this.versions, (item) => {
+          return item.value
+        });
+        let reqParams = {
+          buyNumber: this.buyNum,
+          buyType: this.buyType.value,
+          period: this.period.value,
+          version: buyVersionsArray.join(','),
+          bankId: this.bankId
+        };
+        this.$http.post('/api/createOrder', reqParams)
+          .then((res) => {
+            this.orderId = res.data.orderId;
+            this.isShowCheckOrder = true;
+            this.isShowPayDialog = false;
+          }, (err) => {
+            this.isShowBuyDialog = false;
+            this.isShowErrDialog = true
+          });
       }
     },
     mounted () {
