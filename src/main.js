@@ -10,6 +10,7 @@ import DetailAnaPage from './pages/detail/analysis.vue';
 import DetailCouPage from './pages/detail/count.vue';
 import DetailForPage from './pages/detail/forecast.vue';
 import DetailPubPage from './pages/detail/publish.vue';
+import OrderListPage from './pages/orderList.vue';
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
@@ -19,6 +20,10 @@ let router = new VueRouter({
       {
           path: '/',
           component: IndexPage
+      },
+      {
+        path: '/orderList',
+        component: OrderListPage
       },
       {
         path: '/detail',
