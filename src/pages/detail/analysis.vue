@@ -102,6 +102,7 @@
         确认购买
       </div>
     </my-dialog>
+    <check-order :is-show-check-dialog="isShowCheckOrder" :order-id="orderId" @on-close-check-dialog="hideCheckOrder"></check-order>
   </div>
 </template>
 
@@ -112,6 +113,7 @@
   import VMulChooser from '../../components/base/multiplyChooser.vue';
   import VSelection from '../../components/base/selection.vue';
   import BankChooser from '../../components/bankChooser.vue'
+  import CheckOrder from '../../components/checkOrder.vue';
   import _ from 'lodash';
 
   export default {
@@ -121,7 +123,8 @@
       VChooser,
       VMulChooser,
   		VSelection,
-      BankChooser
+      BankChooser,
+      CheckOrder
     },
     data () {
       return {
@@ -204,6 +207,9 @@
       },
       hideShowPayDialog() {
       	this.isShowPayDialog = false;
+      },
+      hideCheckOrder () {
+        this.isShowCheckOrder = false
       },
       onChangeBanks(bankObj) {
       	this.bankId = bankObj.id
